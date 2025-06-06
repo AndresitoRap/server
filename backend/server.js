@@ -70,9 +70,9 @@ app.all('/api/:endpoint*', async (req, res) => {
 });
 
 // 🔧 Flutter Web build (SPA)
-app.use(express.static(path.join(__dirname, '../frontend/web')));
+app.use(express.static(path.join(__dirname, 'frontend/web')));
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/web/index.html'));
+  res.sendFile(path.join(__dirname, 'frontend/web/index.html'));
 });
 
 app.listen(PORT, () => console.log(`Servidor escuchando en puerto ${PORT}`));
