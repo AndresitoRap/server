@@ -11,8 +11,8 @@ COPY backend/ ./backend/
 WORKDIR /app/backend
 RUN npm install
 
-# 5. Copiar frontend Flutter ya compilado
-COPY frontend/web/ ../frontend/web/
+# 5. Copiar frontend Flutter ya compilado (corregido)
+COPY frontend/web/ ./frontend/web/
 
 # 6. Exponer puerto
 EXPOSE 8080
