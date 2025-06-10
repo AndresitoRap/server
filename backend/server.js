@@ -39,16 +39,15 @@ app.post('/api/Login', async (req, res) => {
 
 // 🌀 PROXY GENÉRICO para GET/POST a cualquier ruta SAP
 app.all('/api/:endpoint*', async (req, res) => {
-  if (!sapSessionCookie) {
-    return res.status(401).json({ error: 'No hay sesión activa en SAP' });
-  }
+  if (!sapSessionCookie) return res.status(401).json({ error: 'No hay sesión activa en SAP' });
 
-  const endpoint = req.params.endpoint + (req.params[0] || '');
   const method = req.method;
   const body = ['POST', 'PUT', 'PATCH'].includes(method) ? JSON.stringify(req.body) : undefined;
+  const sapPath = req.originalUrl.replace(/^\/api\//, '');
+  const sapUrl = `${SAP_URL}/${sapPath}`;
 
   try {
-    const sapRes = await fetch(`${SAP_URL}/${endpoint}`, {
+    const sapRes = await fetch(sapUrl, {
       method,
       headers: {
         'Content-Type': 'application/json',
@@ -62,12 +61,13 @@ app.all('/api/:endpoint*', async (req, res) => {
       const data = JSON.parse(text);
       res.status(sapRes.status).json(data);
     } catch {
-      res.status(sapRes.status).send(text); // fallback por si no es JSON
+      res.status(sapRes.status).send(text);
     }
   } catch (e) {
     res.status(500).json({ error: 'Error al comunicar con SAP', detail: e.message });
   }
 });
+
 
 // 🔧 Flutter Web build (SPA)
 app.use(express.static(path.join(__dirname, 'frontend/web')));
