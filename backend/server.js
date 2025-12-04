@@ -5,7 +5,7 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-const SAP_URL = 'https://srv-2108.starkcloud.com:50000/b1s/v1';
+const SAP_URL = 'https://sap-packvision-sl.skyinone.net:50000/b1s/v1';
 let sapSessionCookie = '';
 
 app.use(cors({
